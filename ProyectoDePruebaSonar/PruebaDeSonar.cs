@@ -12,7 +12,7 @@ public class ahora : PageTest
     {
         await Page.GotoAsync("https://autogestion-beta.dpec.com.ar/turnos/registrarturno");
 
-        await Page.GetByPlaceholder("E-mail").FillAsync("m");
+        await Page.GetByPlaceholder("E-mail").FillAsync("maaa");
 
         await Page.GetByPlaceholder("Contraseña").FillAsync("Pas");
 
