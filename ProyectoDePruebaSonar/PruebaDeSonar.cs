@@ -14,7 +14,7 @@ public class ahora : PageTest
 
         await Page.GetByPlaceholder("E-mail").FillAsync("maaa");
 
-        await Page.GetByPlaceholder("Contraseña").FillAsync("Pas");
+        await Page.GetByPlaceholder("Contraseña").FillAsync("Passs");
 
         await Page.GetByRole(AriaRole.Button, new() { Name = "INGRESAR", Exact = true }).ClickAsync();
 
