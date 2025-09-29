@@ -1,0 +1,44 @@
+name: SonarCloud .NET Analysis
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      # 1️⃣ Clonar el repositorio
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 2️⃣ Configurar .NET
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.x'
+
+      # 3️⃣ Instalar SonarScanner para .NET
+      - name: Install SonarScanner for .NET
+        run: dotnet tool install --global dotnet-sonarscanner
+
+      # 4️⃣ Iniciar análisis SonarCloud
+      - name: Begin SonarCloud Analysis
+        run: dotnet sonarscanner begin /k:"Mariano210597_Test-QA" /o:"mariano210597" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
+
+      # 5️⃣ Build del proyecto
+      - name: Build
+        run: dotnet build --configuration Release
+
+      # 6️⃣ Ejecutar tests y generar cobertura
+      - name: Test
+        run: dotnet test --no-build --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+
+      # 7️⃣ Finalizar análisis SonarCloud
+      - name: End SonarCloud Analysis
+        run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
